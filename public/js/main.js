@@ -1,47 +1,73 @@
-function loadImage(url) { // function to load an image
-    return new Promise(resolve => { // returns promise
-        const image = new Image(); // create image instance
-        image.addEventListener('load', () => { // attach to image load event listener
-            // load event fires when image is downloaded
-            resolve(image); //resolve promise with the image itself
-        });
-        image.src = url; // In order to activate image downloaded
-    });
-}
+import {loadImage} from './loaders.js'
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
+canvas.width = 300;
+canvas.height = 400;
 
 
 
-loadImage('/images/new-green-deck-a-in-progress.svg')
+
+const image = '/images/new-green-deck-a-in-progress.svg';
+const imageTileSize = 10;
+const imageTilesWidth = 15;
+const imageTilesHeight = 20;
+const imageWidth = imageTilesWidth * imageTileSize;
+
+const canvasTilesWidth = 13;
+const canvasTileSize = canvas.width / canvasTilesWidth;
+
+const canvasTilesHeight = Math.floor(canvas.height / canvasTileSize);
+
+/*
+canvasTileSize       canvas.width
+---------------- = -----------------
+imageTileSize             x
+
+
+*/
+
+console.log('::: ', imageTileSize);
+
+
+
+loadImage(image)
 .then(image => {
-    context.drawImage(image, 
-        0, 0, 150, 150, // subset 
-        0, 0, 640, 640 // where 
-    );
-
     
+    
+    context.fillStyle = '#cccc00';
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
-    for(let i = 0;i < 15;i++) {
-        for(let j = 0;j < 15;j++) {
+
+
+    for(let i = 0;i < canvasTilesWidth;i++) {
+        for(let j = 0;j < canvasTilesHeight;j++) {
             if(j % 2) {
                 if(i % 2) {
                     context.fillStyle = 'rgb(255, 165, 0, .2)';
                 } else {
                     context.fillStyle = 'rgb(255, 0, 165, .2)';
                 }
-                context.fillRect(i * 42.66, j * 42.66, 42.66, 42.66);
+                context.fillRect(i * canvasTileSize, j * canvasTileSize, canvasTileSize, canvasTileSize);
             } else {
                 if(i % 2) {
                     context.fillStyle = 'rgb(255, 0, 165, .2)';
                 } else {
                     context.fillStyle = 'rgb(255, 165, 0, .2)';
                 }
-                context.fillRect(i * 42.66, j * 42.66, 42.66, 42.66);
+                context.fillRect(i * canvasTileSize, j * canvasTileSize, canvasTileSize, canvasTileSize);
             }
         }
     }
 
-});
 
+    
+    context.drawImage(image, 
+        1 * imageTileSize, 
+        2 * imageTileSize, 
+        canvasTilesWidth * imageTileSize, 
+        canvasTilesHeight * imageTileSize, // subset 
+        0, 0, canvas.width, canvas.height // where 
+    );
+    
+});

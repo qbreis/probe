@@ -1,0 +1,13 @@
+{
+    "name": "Nostromo",
+    "decks": [
+        {
+            "name": "A",
+            "image": "/images/new-green-deck-a-in-progress.svg",
+            "width": 15,
+            "height": 20,
+        }
+    ],
+    
+
+}
