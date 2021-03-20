@@ -1,59 +1,20 @@
 import {loadImage} from './loaders.js'
-import SpriteSheet from './SpriteSheet.js';
+import ImageManager from './ImageManager.js';
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 canvas.width = 300;
 canvas.height = 400;
 
-const canvasTilesWidth = 13;
+const canvasTilesWidth = 11;
 const canvasTileSize = canvas.width / canvasTilesWidth;
 const canvasTilesHeight = Math.ceil(canvas.height / canvasTileSize);
 
-
-
 const image = '/images/new-green-deck-a-in-progress.svg';
-const imageTileSize = 10;
 
 loadImage(image)
 .then(image => {
-    
-    
-    
-    context.fillStyle = '#cccc00';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    for(let i = 0;i < canvasTilesWidth;i++) {
-        for(let j = 0;j < canvasTilesHeight;j++) {
-            if(j % 2) {
-                if(i % 2) {
-                    context.fillStyle = 'rgb(255, 165, 0, .2)';
-                } else {
-                    context.fillStyle = 'rgb(255, 0, 165, .2)';
-                }
-                context.fillRect(i * canvasTileSize, j * canvasTileSize, canvasTileSize, canvasTileSize);
-            } else {
-                if(i % 2) {
-                    context.fillStyle = 'rgb(255, 0, 165, .2)';
-                } else {
-                    context.fillStyle = 'rgb(255, 165, 0, .2)';
-                }
-                context.fillRect(i * canvasTileSize, j * canvasTileSize, canvasTileSize, canvasTileSize);
-            }
-        }
-    }
-/*
-    const sprites = new SpriteSheet(image, 150, 200, canvasTileSize);
-    sprites.define('ship', 0, 0, 150, 200);
-    sprites.draw('ship', context, 0, 0);
-*/
-
-    context.drawImage(image, 
-        1 * imageTileSize, 
-        2 * imageTileSize, 
-        canvasTilesWidth * imageTileSize, 
-        canvasTilesHeight * imageTileSize, // subset 
-        0, 0, canvasTilesWidth * canvasTileSize, canvasTilesHeight * canvasTileSize // where 
-    );
-    
+    const backgroundImage = new ImageManager(image, 10);
+    backgroundImage.draw(canvas, context, canvasTileSize, canvasTilesWidth, canvasTilesHeight, 5, 43);
 });
+
